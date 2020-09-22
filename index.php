@@ -24,6 +24,9 @@
             </form>                
       </div>
       <?php
+            session_start();
+            $_SESSION['attempt'] = 0;
+            $_SESSION['score'] = 0;
             if(array_key_exists('elonye-btn', $_POST)){
                 header("Location: guess.php");
             }

@@ -1,4 +1,8 @@
 <?php    
+    session_start();
+    if(!isset($_SESSION['attempt'])){
+        header("Location: index.php");
+    }
     function newTweet(){
         require('./api/elon.php');
         require('./api/kanye.php');
@@ -20,30 +24,20 @@
          */
         shuffle($responses);
         
-        return $responses[0];
-    }
-    function checkTweet($tweet){   
-        require('./api/elon.php');
-        require('./api/kanye.php');
-        $message = "";
-        if($_SERVER['REQUEST_METHOD'] == "POST" ){
-            if(isset($_POST['elon-btn'])){
-                if(in_array($tweet, $filtered_kanye)){
-                    $message = "Spot on! Now try this one";
-                } else {
-                    $message = "Sorry! That's not the right answer. :( Try this one";
-                }
-            } else {
-                if(in_array($tweet, $filtered_elon)){
-                    $message = "Spot on! Now try this one";
-                } else {
-                    $message = "Sorry! That's not the right answer. :( Try this one";
-                }
-            }
-            echo "<h1>" . $message . "</h1>";
+        if(in_array($responses[0], $filtered_elon)){
+            return array(
+                $responses[0],
+                "elon"
+            );
+        } else {
+            return array(
+                $responses[0],
+                "kanye"
+            );
         }
+        
     }
-    $score = 0;
+    
 ?>
 
 <!doctype html>
@@ -65,28 +59,70 @@
         <h1>Guess the tweet given in the blue box</h1>
     </div>
     <div class = "container" id = "tweet">
-        <?php $tweet = newTweet(); ?>
+        <?php
+            $tweetInfo = newTweet(); 
+            $tweet = $tweetInfo[0];
+            $tweetOwner = $tweetInfo[1];
+        ?>
         <p id = "tweet-text"><?php echo $tweet; ?></p>
     </div>
     <div class="container" id = "options">
             <h1 id = "result"></h1>
-            <form method = "post">
-                <button name = "elon-btn" class="option">
-                    ELON MUSK
-                </button>  
-                <button name = "kanye-btn" class="option">
-                    KANYE WEST
-                </button>
-            </form>        
+            <?php
+                echo '<form method = "post">
+                    <button name = "elon-btn" class="option">
+                        ELON MUSK
+                    </button>  
+                    <button name = "kanye-btn" class="option">
+                        KANYE WEST
+                    </button>
+                </form>';    
+            ?>    
     </div>
     <?php
-        checkTweet($tweet);
+        $message = "";
+
+        /**
+         * This block of if code below is to handle all the 
+         * post requests that can be made through the page
+         * It includes post requests through 'elon musk' button,
+         * 'kanye west' button and 'show results' button
+         */
+        if($_SERVER['REQUEST_METHOD'] == "POST"){
+            if(isset($_POST['elon-btn'])){
+                if($tweetOwner == "elon"){
+                    $message = "Spot on! Now try this one";
+                    $_SESSION['score']++;
+                } else {
+                    $message = "Sorry! That's not the right answer. :( Try this one";
+                }
+                $_SESSION['attempt']++;
+            } else if(isset($_POST['kanye-btn'])){
+                if($tweetOwner == "kanye"){
+                    $message = "Spot on! Now try this one";
+                    $_SESSION['score']++;
+                } else {
+                    $message = "Sorry! That's not the right answer. :( Try this one";
+                }
+                $_SESSION['attempt']++;
+            } else if(isset($_POST['result-btn'])){
+                header("Location: ./result.php");
+                exit();
+            }
+            echo "<h1 id = 'result-status'></h1>";
+            echo '<script>
+                document.getElementById("result-status").innerHTML = "' . $message . '";
+            </script>';
+            
+        }
     ?>
-    <!-- <form method = "post">
-        <button id = "next-btn">
-            Next
-        </button>  
-    </form> -->
+    <?php
+        echo '<form method = "post">
+            <button name = "result-btn" id = "result-btn">
+                Show Results
+            </button>  
+        </form>';
+    ?>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 
   </body>
