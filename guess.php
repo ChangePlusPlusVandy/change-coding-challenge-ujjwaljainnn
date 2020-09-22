@@ -1,6 +1,5 @@
 <?php    
     function newTweet(){
-
         require('./api/elon.php');
         require('./api/kanye.php');
         /**
@@ -9,8 +8,8 @@
          * Then storing the first elements of the shuffled arrays into another
          * array
          */
-        shuffle($filtered_kanye);
         shuffle($filtered_elon);
+        shuffle($filtered_kanye);
         $responses = array(
             $filtered_elon[0],
             $filtered_kanye[0]
@@ -23,7 +22,27 @@
         
         return $responses[0];
     }
-
+    function checkTweet($tweet){   
+        require('./api/elon.php');
+        require('./api/kanye.php');
+        $message = "";
+        if($_SERVER['REQUEST_METHOD'] == "POST" ){
+            if(isset($_POST['elon-btn'])){
+                if(in_array($tweet, $filtered_kanye)){
+                    $message = "Spot on! Now try this one";
+                } else {
+                    $message = "Sorry! That's not the right answer. :( Try this one";
+                }
+            } else {
+                if(in_array($tweet, $filtered_elon)){
+                    $message = "Spot on! Now try this one";
+                } else {
+                    $message = "Sorry! That's not the right answer. :( Try this one";
+                }
+            }
+            echo "<h1>" . $message . "</h1>";
+        }
+    }
     $score = 0;
 ?>
 
@@ -42,8 +61,12 @@
     <title>Guess the Tweeter</title>
     </head>
     <body>
+    <div class="container">
+        <h1>Guess the tweet given in the blue box</h1>
+    </div>
     <div class = "container" id = "tweet">
-        <p id = "tweet-text">Have you hugged a tunnel today?</p>
+        <?php $tweet = newTweet(); ?>
+        <p id = "tweet-text"><?php echo $tweet; ?></p>
     </div>
     <div class="container" id = "options">
             <h1 id = "result"></h1>
@@ -56,18 +79,16 @@
                 </button>
             </form>        
     </div>
-    <button id = "next-btn">
-        Next
-    </button>  
+    <?php
+        checkTweet($tweet);
+    ?>
+    <!-- <form method = "post">
+        <button id = "next-btn">
+            Next
+        </button>  
+    </form> -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-    <script>
-        
-    </script>
+
   </body>
 </html>
 
-<?php
-
-
-
-?>
