@@ -1,34 +1,45 @@
 <?php
-    require_once('./include/OAuth.php');
-    require_once('./include/TwitterAPIExchange.php');
-    require_once('./include/twitteroauth.php');
 
-    require_once('./include/config.php');
+    require './include/config.php';   
 
-    $requestMethod = 'GET';
+    /**
+     * The user specifc url arguments for elon musk 
+     * 
+     * exclude_replies - true means that the fetched JSON object would
+     * not include replies from the users' timeline
+     * 
+     * tweet_mode - twitter default tweet length using the api is 200 characters
+     * and to fetch the full tweet, we need to use this property and set it to
+     * extended and then use 'full_text' instead of 'text' to fetch the text of the
+     * tweet 
+     */
+    $username = "elonmusk";
+    $getfield = '?screen_name='. $username .'&count=3200&exclude_replies=true&trim_user=true&include_rts=false&tweet_mode=extended';
 
-    $settings = array(
-        'consumer_key' => '0wwKDnOzujytSgw8J7iWb98IC',
-        'consumer_secret' => 'MfrNFCLCD2SRgkeiOL5SIgo7mFwUOju9zBEi5y3jxfBJkhmC1X',
-        'oauth_access_token' => '1166031996977438720-ojZ43kKrJaHP9vhHNEpkfEdH2IgBJm',
-        'oauth_access_token_secret' => 'miZEclN4jhsRgH0jAtRUGfieRjwJ1fiNKvL4lIrhBX08E',
-    );
-    
-    $url = 'https://api.twitter.com/1.1/statuses/user_timeline.json';
-    
-    $getfield = '?screen_name=elonmusk&count=2000&exclude_replies=true&trim_user=true&include_rts=false&tweet_mode=extended';
-    $twitter = new TwitterAPIExchange($settings);
+    /**
+     * The statement below fetches the data using twitter API in a 
+     * JSON format and then we convert that JSON format data into 
+     * array format data using json_decode()
+     */
     $response_elon = json_decode($twitter -> setGetField($getfield)
                         -> buildOauth($url, $requestMethod)
                         -> performRequest(), $assoc=TRUE);
 
-    
-
+    /**
+     * filtered_elon contains only those tweets texts which fulfill our 
+     * conditions
+     * is_quote_status - whether a tweet is a quote tweet or not
+     * retweeted - whether a tweet is a retweet or not
+     * ['entities']['user_mentions'] - the array of accounts tagged in the tweet
+     * ['entities']['media'] - the array that contains the media attached in the tweet
+     * ['entitites']['urls'] - the array that contains the links included in the tweet
+     */
     $filtered_elon = array();
     foreach($response_elon as $key){
-        if(!$key['is_quote_status'] && !$key['retweeted'] && empty($key['entities']['user_mentions']) && !isset($key['entities']['media']) && empty ($key['entities']['media']) && empty($key['entitites']['urls'])){
+        if(!$key['is_quote_status'] && !$key['retweeted'] && empty($key['entities']['user_mentions'])
+         && !isset($key['entities']['media']) && empty ($key['entities']['media']) 
+         && empty($key['entitites']['urls'])){
             array_push($filtered_elon, $key['full_text']);
-            // echo '<p>'. $key['full_text'] . '</p><br>';
         }
     }
     
