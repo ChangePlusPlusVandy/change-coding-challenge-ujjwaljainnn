@@ -1,5 +1,10 @@
 <?php
 
+    /**
+     * Making a different API for fetching kanye's data because Elon Musk is 
+     * a specific part of the game and wouln't be appropriate to generalize it's
+     * API with a general form
+     */
     require './include/config.php';   
 
     /**

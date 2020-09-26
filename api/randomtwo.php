@@ -33,14 +33,15 @@
          * ['entities']['media'] - the array that contains the media attached in the tweet
          * ['entitites']['urls'] - the array that contains the links included in the tweet
          */
-        $filtered_elon = array();
+        $filtered = array();
         foreach($response_elon as $key){
             if(!$key['is_quote_status'] && !$key['retweeted'] && empty($key['entities']['user_mentions'])
             && !isset($key['entities']['media']) && empty ($key['entities']['media']) 
             && empty($key['entitites']['urls'])){
-                array_push($filtered_elon, $key['full_text']);
+                array_push($filtered, $key['full_text']);
             }
         }
+        return $filtered;
     }
         
     

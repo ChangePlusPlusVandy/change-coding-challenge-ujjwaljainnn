@@ -1,9 +1,5 @@
 <?php  
-    /**
-     * This file is particulary specified for KAnye VS Musk game and 
-     * not mixed with the general user API because the latter is an
-     * optional part of the game while main game is about Kanye and Musk 
-     */
+    
     /**
      * The following if loop checks if the user is in
      * a session which start by visiting our index.php page, 
@@ -15,23 +11,22 @@
         header("Location: index.php");
     }
     function newTweet(){
-        require('./api/elon.php');
-        require('./api/kanye.php');
+        require('./api/chooseRandom.php');
         /**
          * Shuffling the array that contain only tweet-texts of 
          * the tweets that fulfill our requirements 
          * Then storing the first elements of the shuffled arrays into another
          * array
          */
-        shuffle($filtered_elon);
-        shuffle($filtered_kanye);
+        shuffle($user1_array);
+        shuffle($user2_array);
         $responses = array(
-            $filtered_elon[0],
-            $filtered_kanye[0]
+            $user1_array[0],
+            $user2_array[0]
         );
         /**
          * Shuffling the array with the first elements and that contain one tweet from 
-         * Kanye and another from Elon
+         * user 1 and another from user 2
          */
         shuffle($responses);
         
@@ -40,15 +35,15 @@
          * then return an array with the tweet as the first element and the owner
          * of that tweet as the second element.
          */
-        if(in_array($responses[0], $filtered_elon)){
+        if(in_array($responses[0], $user1_array)){
             return array(
                 $responses[0],
-                "elon"
+                "user1"
             );
         } else {
             return array(
                 $responses[0],
-                "kanye"
+                "user2"
             );
         }
         
@@ -90,11 +85,11 @@
             <h1 id = "result"></h1>
             <?php
                 echo '<form method = "post">
-                    <button name = "elon-btn" class="option">
-                        ELON MUSK
+                    <button name = "user1-btn" class="option">
+                        User 1
                     </button>  
-                    <button name = "kanye-btn" class="option">
-                        KANYE WEST
+                    <button name = "user2-btn" class="option">
+                        User 2
                     </button>
                 </form>';    
             ?>    
@@ -114,16 +109,16 @@
              * owner is 'x' or not and depending on that, it displays the result
              * and increases(or not) the session variable of score.
              */
-            if(isset($_POST['elon-btn'])){
-                if($tweetOwner == "elon"){
+            if(isset($_POST['user1-btn'])){
+                if($tweetOwner == "user1"){
                     $message = "Spot on! Now try this one";
                     $_SESSION['score']++;
                 } else {
                     $message = "Sorry! That's not the right answer. :( Try this one";
                 }
                 $_SESSION['attempt']++;
-            } else if(isset($_POST['kanye-btn'])){
-                if($tweetOwner == "kanye"){
+            } else if(isset($_POST['user2-btn'])){
+                if($tweetOwner == "user2"){
                     $message = "Spot on! Now try this one";
                     $_SESSION['score']++;
                 } else {
