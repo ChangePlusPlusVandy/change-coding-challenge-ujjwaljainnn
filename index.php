@@ -16,10 +16,10 @@
         <div class="column">
             <form method = "post">
                 <button name = "elonye-btn" id = "elonye-btn"> 
-                PLAY ELON VS YE  
+                  PLAY ELON VS YE  
                 </button>
                 <button name = "random-btn" id = "random-btn">
-                    PLAY RANDOM TWO
+                  PLAY RANDOM TWO
                 </button>
             </form>                
       </div>

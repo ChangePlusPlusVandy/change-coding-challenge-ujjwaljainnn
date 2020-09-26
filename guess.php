@@ -1,4 +1,10 @@
 <?php    
+    /**
+     * The following if loop checks if the user is in
+     * a session which start by visiting our index.php page, 
+     * if yes, it continues to play the game
+     * if not, it redirects the user to the main page first
+     */
     session_start();
     if(!isset($_SESSION['attempt'])){
         header("Location: index.php");
@@ -24,6 +30,11 @@
          */
         shuffle($responses);
         
+        /**
+         * The next set of code selects the first element of the shuffled tweets and
+         * then return an array with the tweet as the first element and the owner
+         * of that tweet as the second element.
+         */
         if(in_array($responses[0], $filtered_elon)){
             return array(
                 $responses[0],
@@ -60,6 +71,10 @@
     </div>
     <div class = "container" id = "tweet">
         <?php
+            /**
+             * the following three lines fetch the returned array from newTweet()
+             * and then store the tweet text and tweet owner in variables
+             */
             $tweetInfo = newTweet(); 
             $tweet = $tweetInfo[0];
             $tweetOwner = $tweetInfo[1];
@@ -89,6 +104,11 @@
          * 'kanye west' button and 'show results' button
          */
         if($_SERVER['REQUEST_METHOD'] == "POST"){
+            /**
+             * This if checks if and else-if the button pressed was 'x' and the tweet
+             * owner is 'x' or not and depending on that, it displays the result
+             * and increases(or not) the session variable of score.
+             */
             if(isset($_POST['elon-btn'])){
                 if($tweetOwner == "elon"){
                     $message = "Spot on! Now try this one";

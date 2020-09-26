@@ -2,11 +2,15 @@
     session_start();
     if(isset($_SESSION['attempt'])){
         echo '
-        <h1>You got ' . $_SESSION['score'] . ' right out of '. $_SESSION['attempt'] . ' tweets</h1>';
+        <div class = "container">
+        <h1>You got ' . $_SESSION['score'] . ' right out of '. $_SESSION['attempt'] . ' tweets</h1>
+        </div>';
         session_unset();
         session_destroy();
     } else{
-        echo '<h1>Please play the game first!</h1>';
+        echo '
+        <div class = "container"><h1>Please play the game first!</h1>';
+        echo '<p>Click <a href = "./index.php">here</a> for to play the game<p></div>';
         
     }
     
