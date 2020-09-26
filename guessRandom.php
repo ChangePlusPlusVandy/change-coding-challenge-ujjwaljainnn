@@ -1,5 +1,5 @@
 <?php  
-    
+
     /**
      * The following if loop checks if the user is in
      * a session which start by visiting our index.php page, 
@@ -11,18 +11,18 @@
         header("Location: index.php");
     }
     function newTweet(){
-        require('./api/chooseRandom.php');
         /**
          * Shuffling the array that contain only tweet-texts of 
          * the tweets that fulfill our requirements 
          * Then storing the first elements of the shuffled arrays into another
          * array
          */
-        shuffle($user1_array);
-        shuffle($user2_array);
+        
+        shuffle($_SESSION['user1_array']);
+        shuffle($_SESSION['user2_array']);
         $responses = array(
-            $user1_array[0],
-            $user2_array[0]
+            $_SESSION['user1_array'][0],
+            $_SESSION['user2_array'][0]
         );
         /**
          * Shuffling the array with the first elements and that contain one tweet from 
@@ -35,7 +35,7 @@
          * then return an array with the tweet as the first element and the owner
          * of that tweet as the second element.
          */
-        if(in_array($responses[0], $user1_array)){
+        if(in_array($responses[0], $_SESSION['user1_array'])){
             return array(
                 $responses[0],
                 "user1"
@@ -75,7 +75,7 @@
              * the following three lines fetch the returned array from newTweet()
              * and then store the tweet text and tweet owner in variables
              */
-            $tweetInfo = newTweet(); 
+            $tweetInfo = newTweet();
             $tweet = $tweetInfo[0];
             $tweetOwner = $tweetInfo[1];
         ?>
@@ -86,10 +86,10 @@
             <?php
                 echo '<form method = "post">
                     <button name = "user1-btn" class="option">
-                        User 1
+                        '. $_SESSION['user1_name'] .'
                     </button>  
                     <button name = "user2-btn" class="option">
-                        User 2
+                        '. $_SESSION['user2_name'] .'
                     </button>
                 </form>';    
             ?>    

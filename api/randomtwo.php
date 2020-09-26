@@ -1,7 +1,8 @@
 <?php
 
-    require './include/config.php';   
+      
     function fetchTweets($username){
+        require './include/config.php'; 
         /**
          * The user specifc url arguments for elon musk 
          * 
@@ -34,8 +35,8 @@
          * ['entitites']['urls'] - the array that contains the links included in the tweet
          */
         $filtered = array();
-        foreach($response_elon as $key){
-            if(!$key['is_quote_status'] && !$key['retweeted'] && empty($key['entities']['user_mentions'])
+        foreach($response as $key){
+            if($key['is_quote_status'] && !$key['retweeted'] && empty($key['entities']['user_mentions'])
             && !isset($key['entities']['media']) && empty ($key['entities']['media']) 
             && empty($key['entitites']['urls'])){
                 array_push($filtered, $key['full_text']);

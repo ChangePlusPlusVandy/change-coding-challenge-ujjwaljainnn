@@ -30,11 +30,15 @@
             session_start();
             $_SESSION['attempt'] = 0;
             $_SESSION['score'] = 0;
+            $_SESSION['user1_name'] = "";
+            $_SESSION['user2_name'] = "";
+            $_SESSION['user1_array'] = array();
+            $_SESSION['user2_array'] = array();
             if(array_key_exists('elonye-btn', $_POST)){
                 header("Location: guess.php");
             }
             if(array_key_exists('random-btn', $_POST)){
-                header("Location: guessRandom.php");
+                header("Location: chooseUsers.php");
             }
       ?>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
