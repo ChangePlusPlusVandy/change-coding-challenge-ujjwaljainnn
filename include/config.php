@@ -10,10 +10,10 @@
     $requestMethod = 'GET';
 
     $settings = array(
-        'consumer_key' => '0wwKDnOzujytSgw8J7iWb98IC',
-        'consumer_secret' => 'MfrNFCLCD2SRgkeiOL5SIgo7mFwUOju9zBEi5y3jxfBJkhmC1X',
-        'oauth_access_token' => '1166031996977438720-ojZ43kKrJaHP9vhHNEpkfEdH2IgBJm',
-        'oauth_access_token_secret' => 'miZEclN4jhsRgH0jAtRUGfieRjwJ1fiNKvL4lIrhBX08E',
+        'consumer_key' => '',
+        'consumer_secret' => '',
+        'oauth_access_token' => '',
+        'oauth_access_token_secret' => '',
     );
 
     $url = 'https://api.twitter.com/1.1/statuses/user_timeline.json';
